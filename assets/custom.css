@@ -1,0 +1,8 @@
+.Select-control {
+	background-color: #adb5bd;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+	color: black;
+}
+
