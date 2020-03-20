@@ -30,7 +30,7 @@ price_list = ['<5 000','<10 000', '<30 000','<50 000','<80 000', 'All prices']
 price_val = ['5000', '10000', '30000', '50000', '80000', '500000']
 price_opts  = [{'label':k, 'value':l} for k,l in zip(price_list,price_val)]
 
-header = dbc.Row([
+navbar = dbc.Row([
 	dbc.Col([
 		dbc.Row(html.H4("Airbnb Listings Webmap - Tokyo", className='ml-3 my-2'),
 		style={'height':'100%'})
@@ -74,8 +74,9 @@ header = dbc.Row([
 style={'backgroundColor':'#385A7D'}
 )
 
+
 body = dbc.Container([
-	header,
+	navbar,
 	dbc.Row([
 		dbc.Col([
 			dbc.Row([
@@ -89,7 +90,8 @@ body = dbc.Container([
 				)
 			],
 			justify="center",
-			style={'height':'50%'}),
+			style={'height':'50vh'}
+			),
 			dbc.Row([
 				dbc.Col(
 					dbc.Col(dcc.Graph(id="reviewed",responsive=True,config={'displayModeBar': False}, style={'height':'100%'})
@@ -100,8 +102,10 @@ body = dbc.Container([
 					,className='my-3 rounded-lg',style={'backgroundColor':'#303030','height':'90%'}),md=6
 				)
 			],
-			style={'height':'50%'}),
+			style={'height':'50vh'}
+			),
 		],
+		className='px-4',
 		md=6),
 		dbc.Col([
 			dbc.Row([
@@ -110,8 +114,9 @@ body = dbc.Container([
 		],
 		md=6)
 	],
-	style={'height':'95vh'})
+	style={'height':'93vh'})
 ], fluid=True)
+
 
 
 def serve_layout():
@@ -134,7 +139,7 @@ def update_map(neighbor,room,price):
 		notice = do.Figure(do.Indicator(
 			mode= 'number',
 			value= 0,
-			title = {"text": 'Apply filters (located upper right)','font':{'color':'#ffffff','size':15}},
+			title = {"text": 'Please apply filters','font':{'color':'#ffffff','size':15}},
 			number={'font':{'color':'#ffffff'}}))
 		notice.update_layout(margin= do.layout.Margin(t=0,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
 		
@@ -202,31 +207,32 @@ def update_map(neighbor,room,price):
 			mode= 'number',
 			value= len(init_df),
 			title = {"text": 'Number of Listings','font':{'color':'#ffffff'}},
-			number={'font':{'color':'#ffffff'}}))
-	card1.update_layout(margin= do.layout.Margin(t=0,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
+			number={'font':{'color':'#ffffff', 'size':70}}))
+	card1.update_layout(margin= do.layout.Margin(t=40,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
 	
 	card2 = do.Figure(do.Indicator(
 			mode= 'number',
 			value= np.average(init_df['price']),
-			title = {"text": 'Average Price','font':{'color':'#ffffff','size':21}},
-			number={'font':{'color':'#ffffff'}}))
-	card2.update_layout(margin= do.layout.Margin(t=0,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
+			title = {"text": 'Average Price','font':{'color':'#ffffff'}},
+			number={'valueformat':'.1f','font':{'color':'#ffffff', 'size':70}}))
+	card2.update_layout(margin= do.layout.Margin(t=40,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
 	
 	reviewed = do.Figure(do.Indicator(
 			mode= 'number',
 			value= df_reviewed,
 			title = {"text": "<span style='font-size:0.95em;color:white'>Most Reviews</span><br><span style='font-size:0.7em;color:#3498db'>{}</span>".format(init_df.loc[init_df['number_of_reviews'] == df_reviewed].name.values[0])},
 			number={'font':{'color':'#ffffff'}}))
-	reviewed.update_layout(margin= do.layout.Margin(t=25,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
+	reviewed.update_layout(margin= do.layout.Margin(t=58,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
 	
 	availbl = do.Figure(do.Indicator(
 			mode= 'number',
 			value= df_available,
 			title = {"text": "<span style='font-size:0.95em;color:white'>Highly Available (days/year)</span><br><span style='font-size:0.7em;color:#f39c12'>{}</span>".format(init_df.loc[init_df['availability_365'] == df_available].name.values[0])},
 			number={'font':{'color':'#ffffff'}}))
-	availbl.update_layout(margin= do.layout.Margin(t=25,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
+	availbl.update_layout(margin= do.layout.Margin(t=58,b=0), plot_bgcolor='#303030', paper_bgcolor='#303030')
 	
 	return map1,card1,card2,reviewed,availbl
+
 
 
 if __name__ == "__main__":
